@@ -11,13 +11,14 @@ var connection = mysql.createConnection({
     port: port,
     user: userName,
     password: passwordValue,
-    database: databaseName
+    database: databaseName,
+    maxIdle: 0,
+    idleTimeout: 60000,
+    enableKeepAlive: true
 });
-
+ 
 const databaseConnection = function () {
     return new Promise((resolve, reject) => {
-        console.log(connection.state);
-
         if(connection.state === 'connected' || connection.state === 'authenticated') {
             console.log('Conexão já existente');
             return resolve(connection);
