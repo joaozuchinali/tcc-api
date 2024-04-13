@@ -5,21 +5,17 @@ router.use(express.json());
 const dbController = require('../../database/db');
 const funcs = require('../../utils/funcs');
 
-const sqlInsert = 'INSERT INTO `projeto` (`identificador`,`codigo`,`nome`,`idequipe`,`idstatus`) VALUES (?, ?, ?, ?, ?);'
-const sqlCheck  = 'SELECT * FROM `projeto` WHERE `projeto`.`identificador` = ?';
-const sqlReturn = 'SELECT * FROM `projeto` WHERE `projeto`.`idprojeto` = ?';
+const sqlInsert = 'INSERT INTO `equipe` (`nome`,`idstatus`) VALUES (?, ?);'
+const sqlReturn = 'SELECT * FROM `equipe` WHERE `equipe`.`idequipe` = ?';
 
-// http://localhost:12005/api/projetos/create/
-// https://joaozucchinalighislandi.com.br/api/projetos/create/
+// http://localhost:12005/api/equipes/create/
+// https://joaozucchinalighislandi.com.br/api/equipes/create/
 router.post('/', async function(req, res) {
     const body = req.body;
     
-    if(body.nome && body.codigo && body.idequipe) {
+    if(body.nome) {
         const values = [
-            null,
-            body.codigo,
             body.nome,
-            body.idequipe,
             1
         ];
 
@@ -34,7 +30,7 @@ router.post('/', async function(req, res) {
         });
     }
     else {
-        const empty = funcs.returnAbsentProps(body, [ 'codigo', 'nome', 'idequipe' ]);
+        const empty = funcs.returnAbsentProps(body, [ 'nome' ]);
         res.status(300).send({
             msg: 'Um ou mais campos vazios: (' + empty.join(', ') + ')',
             status: "error"
@@ -43,27 +39,7 @@ router.post('/', async function(req, res) {
 });
 
 async function dbQuery(req, res, database, values) {
-    let flagId = false;
-    let newId = null;
-
-    // Verificar se já existe um projeto com aquele id
-    while(!flagId) {
-        newId = funcs.getRandomId();
-
-        await new Promise((resolve, reject) => {
-            database.query(sqlCheck, [newId], async function(err, result) {
-                if(!Array.isArray(result) || !result.length) {
-                    flagId = true;
-                }
-
-                resolve(true);
-            });
-        });
-    }
-
-    values[0] = newId;
-
-    // Cria o registro
+    // Cria o registro da equipe
     database.query(sqlInsert, values, async function(err, result){
         if(err || result.affectedRows != 1) {
             console.log(err);

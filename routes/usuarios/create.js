@@ -5,22 +5,20 @@ router.use(express.json());
 const dbController = require('../../database/db');
 const funcs = require('../../utils/funcs');
 
-const sqlInsert = 'INSERT INTO `projeto` (`identificador`,`codigo`,`nome`,`idequipe`,`idstatus`) VALUES (?, ?, ?, ?, ?);'
-const sqlCheck  = 'SELECT * FROM `projeto` WHERE `projeto`.`identificador` = ?';
-const sqlReturn = 'SELECT * FROM `projeto` WHERE `projeto`.`idprojeto` = ?';
+const sqlInsert = 'INSERT INTO `usuario` (`nome`,`senha`,`email`,`idstatus`) VALUES (?, ?, ?, 1)';
+const sqlReturn = 'SELECT * FROM `usuario` WHERE `usuario`.`idusuario` = ?';
+const sqlCheck  = 'SELECT * FROM `usuario` WHERE `usuario`.`email` = ?';
 
-// http://localhost:12005/api/projetos/create/
-// https://joaozucchinalighislandi.com.br/api/projetos/create/
+// http://localhost:12005/api/usuarios/create/
+// https://joaozucchinalighislandi.com.br/api/usuarios/create/
 router.post('/', async function(req, res) {
     const body = req.body;
     
-    if(body.nome && body.codigo && body.idequipe) {
+    if(body.nome && body.senha && body.email) {
         const values = [
-            null,
-            body.codigo,
             body.nome,
-            body.idequipe,
-            1
+            body.senha,
+            body.email
         ];
 
         dbController.getConnection()
@@ -43,25 +41,20 @@ router.post('/', async function(req, res) {
 });
 
 async function dbQuery(req, res, database, values) {
-    let flagId = false;
-    let newId = null;
+    const exists = await new Promise((resolve, reject) => {
+        database.query(sqlCheck, [values[2]], async function(err, result) {
 
-    // Verificar se já existe um projeto com aquele id
-    while(!flagId) {
-        newId = funcs.getRandomId();
-
-        await new Promise((resolve, reject) => {
-            database.query(sqlCheck, [newId], async function(err, result) {
-                if(!Array.isArray(result) || !result.length) {
-                    flagId = true;
-                }
-
+            if(Array.isArray(result) && result.length) {
                 resolve(true);
-            });
+            }
+            resolve(false);
         });
+    });
+    if(exists) {
+        res.status(300).send({msg: 'Usuário já existente', data: {code: 2}, status: "error"});
+        return;
     }
 
-    values[0] = newId;
 
     // Cria o registro
     database.query(sqlInsert, values, async function(err, result){

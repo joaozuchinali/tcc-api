@@ -10,9 +10,7 @@ const sql = 'SELECT * FROM `projeto` WHERE `projeto`.`identificador` = ? AND `pr
 // http://localhost:12005/api/access/request/
 // https://joaozucchinalighislandi.com.br/api/access/request/
 router.get('/', async function(req, res) {
-    const body = !funcs.isEmptyObject(req.body) ? req.body : 
-                    !funcs.isEmptyObject(funcs.convertUrlParamsToObject(req)) ? funcs.convertUrlParamsToObject(req) 
-                        : false;
+    const body = req.body;
     
     if(body.identificador && body.codigo) {
         const values = [body.identificador, body.codigo];
@@ -47,7 +45,7 @@ router.get('/', async function(req, res) {
     else {
         const empty = funcs.returnAbsentProps(body, [ 'identificador', 'codigo' ]);
         res.status(300).send({
-            msg: dbController.messages.errorMessage('Um ou mais campos vazios: (' + empty.join(', ') + ')'),
+            msg: 'Um ou mais campos vazios: (' + empty.join(', ') + ')',
             status: "error"
         });
     }

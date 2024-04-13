@@ -1,5 +1,6 @@
 const mysql = require('mysql2');
 
+// === Conexão ===
 const hostName = "127.0.0.1";
 const port = 3306;
 const userName = "root";
@@ -53,6 +54,26 @@ const close = function() {
     })   
 }
 
+// === Funções utilitárias === 
+// Retorna o registro atual
+function getCreatedRegister(database, sqlReturn, insertId) {
+    return new Promise((resolve, reject) => {
+        database.query(sqlReturn, [insertId], function(err, result) {
+            if(Array.isArray(result) && result.length) {
+                resolve(result[0]);
+            }
+
+            resolve(false);
+        });
+    });
+}
+
+// Conexão
 module.exports.getConnection = databaseConnection;
 module.exports.closeConnetion = close;
+
+// Funções utilitárias
+module.exports.getCreatedRegister = getCreatedRegister;
+
+// Mensagens
 module.exports.messages = require('./messages');

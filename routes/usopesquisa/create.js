@@ -29,7 +29,7 @@ router.post('/', async function(req, res) {
     else {
         const empty = funcs.returnAbsentProps(body, [ 'deviceid', 'idprojeto' ]);
         res.status(300).send({
-            msg: dbController.messages.errorMessage('Um ou mais campos vazios: (' + empty.join(', ') + ')'),
+            msg: 'Um ou mais campos vazios: (' + empty.join(', ') + ')',
             status: "error"
         });
     }
