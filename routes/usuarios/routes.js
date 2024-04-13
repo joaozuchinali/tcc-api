@@ -10,16 +10,20 @@ router.use('/create/',  create);
 const update  = require('./update');
 router.use('/update/',  update);
 
-// Requisita acesso a um projeto
-const access = require('./access')
-router.use('/access/',  access);
+// Atualiza um projeto
+const updatemail  = require('./updatemail');
+router.use('/updatemail/',  updatemail);
 
 // Deleta um projeto (apenas muda o status do mesmo)
 const inativar = require('./inativar')
 router.use('/inativar/',  inativar);
 
 // Retorna todos os projetos de uma equipe
-const getall = require('./getall')
-router.use('/getall/',  getall);
+const get = require('./get')
+router.use('/get/',  get);
+
+// Retorna todos os projetos de uma equipe
+const getmail = require('./getmail')
+router.use('/getmail/',  getmail);
 
 module.exports = router;

@@ -52,9 +52,29 @@ function toIsoString() {
         ':' + pad(date.getSeconds()) +
         dif + pad(Math.floor(Math.abs(tzo) / 60)) +
         ':' + pad(Math.abs(tzo) % 60);
-  }
+}
+
+function getRandomId(configs = {}) {
+    const codeSize = configs.codeSize ? configs.codeSize : 9;
+    const values = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    const len = values.length;
+
+    function rec(iteration) {
+        const pos = Math.random() * (len - 1);
+        const chr = values[Math.round(pos)];
+
+        if(iteration == 0) 
+            return chr;
+        else 
+            return chr + rec(iteration - 1);
+    }
+
+    const code = rec(codeSize);
+    return code;
+}
 
 module.exports.returnAbsentProps = returnAbsentProps;
 module.exports.convertUrlParamsToObject = convertUrlParamsToObject;
 module.exports.isEmptyObject = isEmptyObject;
 module.exports.toIsoString = toIsoString;
+module.exports.getRandomId = getRandomId;
