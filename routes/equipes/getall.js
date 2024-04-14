@@ -11,7 +11,7 @@ const sqlGet = 'SELECT * FROM `equipe` ' +
 
 // http://localhost:12005/api/projetos/getall/
 // https://joaozucchinalighislandi.com.br/api/projetos/getall/
-router.get('/', async function(req, res) {
+router.post('/', async function(req, res) {
     const body = req.body;
     
     if(body.idusuario && body.idstatus) {

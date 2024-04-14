@@ -1,4 +1,6 @@
 const express = require('express');
+var cors = require('cors')
+
 const app = express();
 
 const routes = require('./routes/routes');
@@ -24,9 +26,13 @@ app.use(function (req, res, next) {
     next();
 });
 
+app.use(cors({
+    origin: "chrome-extension://nfgpfmehagclkjobkbelofhoacamdifb",
+    optionsSuccessStatus: 200
+}));
+
 app.use(express.urlencoded({ extended: true, limit: "2mb" }));
 app.use(express.json({ limit: "2mb" }));
-// app.use('/images', express.static(process.cwd() + '/database/img'))
 
 app.use('/api/', routes);
 
