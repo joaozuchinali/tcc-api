@@ -9,7 +9,7 @@ const sqlGet = 'SELECT * FROM `usuario` WHERE `usuario`.`idstatus` = ? AND `usua
 
 // http://localhost:12005/api/usuarios/get/
 // https://joaozucchinalighislandi.com.br/api/usuarios/get/
-router.get('/', async function(req, res) {
+router.post('/', async function(req, res) {
     const body = req.body;
     
     if(body.idstatus && body.email && body.senha) {

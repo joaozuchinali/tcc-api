@@ -14,7 +14,10 @@ router.post('/', async function(req, res) {
     const body = req.body;
     
     if(body.deviceid && body.idprojeto) {
-        const values = [body.deviceid, body.idprojeto];
+        const values = [
+            body.deviceid, 
+            body.idprojeto
+        ];
 
         dbController.getConnection()
         .then((database) => {
