@@ -23,7 +23,7 @@ const usopesquisa = require('./usopesquisa/routes');
 router.use('/usopesquisa/', usopesquisa);
 
 // Rota de manutenção dos registros coletados na extensão
-const navegacao = require('./navegacao/routes')
-router.use('/navegacao/', navegacao);
+const registros = require('./registros/routes')
+router.use('/registros/', registros);
 
 module.exports = router;
