@@ -22,4 +22,8 @@ router.use('/inativar/',  inativar);
 const getall = require('./getall')
 router.use('/getall/',  getall);
 
+// Retorna todos os projetos de um usuário
+const getalluser = require('./getalluser')
+router.use('/getalluser/',  getalluser);
+
 module.exports = router;

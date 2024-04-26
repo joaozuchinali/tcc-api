@@ -12,7 +12,7 @@ const sqlGet = 'SELECT * FROM `usuario` WHERE `usuario`.`idstatus` = ? AND `usua
 router.post('/', async function(req, res) {
     const body = req.body;
     
-    if(body.idstatus && body.email && body.senha) {
+    if(body.idstatus && body.email) {
         const values = [
             body.idstatus,
             body.email
@@ -29,7 +29,7 @@ router.post('/', async function(req, res) {
         });
     }
     else {
-        const empty = funcs.returnAbsentProps(body, [ 'idstatus', 'idequipe' ]);
+        const empty = funcs.returnAbsentProps(body, [ 'idstatus', 'email' ]);
         res.status(300).send({
             msg: 'Um ou mais campos vazios: (' + empty.join(', ') + ')',
             status: "error"

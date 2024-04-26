@@ -5,12 +5,12 @@ router.use(express.json());
 const dbController = require('../../database/db');
 const funcs = require('../../utils/funcs');
 
-const sqlGet = 'SELECT * FROM `equipe` ' + 
+const sqlGet = 'SELECT `equipe`.*, `equipeuso`.`idcredencial` FROM `equipe` ' + 
                'INNER JOIN equipeuso ON `equipe`.`idequipe` = `equipeuso`.`idequipe` ' + 
                'WHERE `equipeuso`.`idusuario` = ? AND `equipe`.`idstatus` = ?';
 
-// http://localhost:12005/api/projetos/getall/
-// https://joaozucchinalighislandi.com.br/api/projetos/getall/
+// http://localhost:12005/api/equipes/getall/
+// https://joaozucchinalighislandi.com.br/api/equipes/getall/
 router.post('/', async function(req, res) {
     const body = req.body;
     

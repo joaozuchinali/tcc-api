@@ -30,7 +30,7 @@ router.put('/', async function(req, res) {
         });
     }
     else {
-        const empty = funcs.returnAbsentProps(body, [ 'idcredencial' ]);
+        const empty = funcs.returnAbsentProps(body, [ 'idcredencial', 'idequipeuso' ]);
         res.status(300).send({
             msg: 'Um ou mais campos vazios: (' + empty.join(', ') + ')',
             status: "error"

@@ -5,18 +5,17 @@ router.use(express.json());
 const dbController = require('../../database/db');
 const funcs = require('../../utils/funcs');
 
-const sqlGet = 'SELECT * FROM `usuario` WHERE `usuario`.`idstatus` = ? AND `usuario`.`email` = ? AND `usuario`.`senha` = ?';
+const sqlUpdate = 'DELETE FROM `equipeuso` WHERE `equipeuso`.`idusuario` = ? AND `equipeuso`.`idequipe` = ?';
 
-// http://localhost:12005/api/usuarios/get/
-// https://joaozucchinalighislandi.com.br/api/usuarios/get/
-router.post('/', async function(req, res) {
+// http://localhost:12005/api/equipeuso/delete/
+// https://joaozucchinalighislandi.com.br/api/equipeuso/delete/
+router.put('/', async function(req, res) {
     const body = req.body;
     
-    if(body.idstatus && body.email && body.senha) {
+    if(body.idusuario && body.idequipe) {
         const values = [
-            body.idstatus,
-            body.email,
-            body.senha
+            body.idusuario,
+            body.idequipe
         ];
 
         dbController.getConnection()
@@ -30,7 +29,7 @@ router.post('/', async function(req, res) {
         });
     }
     else {
-        const empty = funcs.returnAbsentProps(body, [ 'idstatus', 'email', 'senha' ]);
+        const empty = funcs.returnAbsentProps(body, [ 'idusuario', 'idequipe' ]);
         res.status(300).send({
             msg: 'Um ou mais campos vazios: (' + empty.join(', ') + ')',
             status: "error"
@@ -40,13 +39,18 @@ router.post('/', async function(req, res) {
 
 async function dbQuery(req, res, database, values) {
     // Atualiza o registro do projeto
-    database.query(sqlGet, values, async function(err, result) {
-        if(err) {
-            res.status(300).send({msg: 'Erro ao buscar o registro', data: {sqlMessage: err.sqlMessage, sql: err.sql}, status: "error"});
+    database.query(sqlUpdate, values, async function(err, result){
+        if(err || result.affectedRows < 1) {
+            console.log(err);
+            res.status(300).send({msg: 'Erro ao deletar o registro', data: {sqlMessage: err ? err.sqlMessage : '', sql: err ? err.sql : ''}, status: "error"});
+            return;
         } else {
             res.status(200).send({
-                msg: 'Sucesso ao buscar registros',
-                data: Array.isArray(result) ? result[0] : result,
+                msg: 'Sucesso ao atualizar registro',
+                data: {
+                    id: -1,
+                    type: 'full'
+                },
                 status: "success"
             });
         }

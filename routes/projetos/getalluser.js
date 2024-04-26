@@ -5,18 +5,21 @@ router.use(express.json());
 const dbController = require('../../database/db');
 const funcs = require('../../utils/funcs');
 
-const sqlGet = 'SELECT * FROM `usuario` WHERE `usuario`.`idstatus` = ? AND `usuario`.`email` = ? AND `usuario`.`senha` = ?';
+const sqlGet = 'SELECT * FROM `projeto` ' + 
+               'INNER JOIN `equipeuso` ON `equipeuso`.`idequipe` = `projeto`.`idequipe` ' + 
+               'WHERE ' + 
+               '`projeto`.`idstatus` = ? AND ' +
+               '`equipeuso`.`idusuario` = ?';
 
-// http://localhost:12005/api/usuarios/get/
-// https://joaozucchinalighislandi.com.br/api/usuarios/get/
+// http://localhost:12005/api/projetos/getalluser/
+// https://joaozucchinalighislandi.com.br/api/projetos/getalluser/
 router.post('/', async function(req, res) {
     const body = req.body;
     
-    if(body.idstatus && body.email && body.senha) {
+    if(body.idstatus && body.idusuario) {
         const values = [
             body.idstatus,
-            body.email,
-            body.senha
+            body.idusuario
         ];
 
         dbController.getConnection()
@@ -30,7 +33,7 @@ router.post('/', async function(req, res) {
         });
     }
     else {
-        const empty = funcs.returnAbsentProps(body, [ 'idstatus', 'email', 'senha' ]);
+        const empty = funcs.returnAbsentProps(body, [ 'idstatus', 'idusuario' ]);
         res.status(300).send({
             msg: 'Um ou mais campos vazios: (' + empty.join(', ') + ')',
             status: "error"
@@ -46,7 +49,7 @@ async function dbQuery(req, res, database, values) {
         } else {
             res.status(200).send({
                 msg: 'Sucesso ao buscar registros',
-                data: Array.isArray(result) ? result[0] : result,
+                data: result,
                 status: "success"
             });
         }
