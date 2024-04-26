@@ -52,7 +52,7 @@ async function dbQuery(req, res, database, values) {
         });
     });
     if(exists) {
-        res.status(300).send({msg: 'Liberação já existente', data: {code: 2}, status: "error"});
+        res.status(300).send({msg: 'Usuário já liberado para a equipe', data: {code: 2}, status: "error"});
         return;
     }
 

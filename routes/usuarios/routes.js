@@ -26,4 +26,8 @@ router.use('/get/',  get);
 const getmail = require('./getmail')
 router.use('/getmail/',  getmail);
 
+// Retorna todos os projetos de uma equipe
+const getequipe = require('./getequipe')
+router.use('/getequipe/',  getequipe);
+
 module.exports = router;

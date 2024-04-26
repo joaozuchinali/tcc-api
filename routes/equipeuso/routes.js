@@ -10,4 +10,8 @@ router.use('/create/',  create);
 const update  = require('./update');
 router.use('/update/',  update);
 
+// Deleta um registro
+const deleteR  = require('./delete');
+router.use('/delete/',  deleteR);
+
 module.exports = router;
