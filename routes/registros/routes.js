@@ -10,12 +10,16 @@ router.use('/navegacao/',  navegacao);
 const tempo  = require('./tempo');
 router.use('/tempo/',  tempo);
 
-// inserção dos registros de tempo
+// retorna a visão geral do projeto
 const visaogeral  = require('./get-visao-geral');
 router.use('/visaogeral/',  visaogeral);
 
-// inserção dos registros de tempo
+// retorna algumas das informações dos domínios
 const infosdominio  = require('./get-info-dominios');
 router.use('/infosdominio/',  infosdominio);
+
+// retorna as informações de tempo
+const tempodominio  = require('./get-tempo-dominios');
+router.use('/tempodominio/',  tempodominio);
 
 module.exports = router;
