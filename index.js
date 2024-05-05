@@ -7,10 +7,10 @@ const routes = require('./routes/routes');
 
 const port = 12005;
 
-// Add headers before the routes are defined
+// headers
 app.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Credentials', true);
     next();
@@ -23,3 +23,5 @@ app.use(express.json({ limit: "2mb" }));
 app.use('/api/', routes);
 
 app.listen(port, () => {});
+
+
