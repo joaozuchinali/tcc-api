@@ -1,7 +1,7 @@
 const mysql = require('mysql2');
 
 // === Conexão ===
-const hostName = "127.0.0.1";
+const hostName = "tcc-render";
 const port = 3306;
 const userName = "root";
 const passwordValue = "1234";
