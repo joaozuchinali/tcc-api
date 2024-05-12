@@ -18,6 +18,10 @@ router.use('/visaogeral/',  visaogeral);
 const infosdominio  = require('./get-info-dominios');
 router.use('/infosdominio/',  infosdominio);
 
+// retorna algumas das informações dos domínios
+const infosdominioext  = require('./get-info-dominios-extensao');
+router.use('/infosdominioext/',  infosdominioext);
+
 // retorna as informações de tempo
 const tempodominio  = require('./get-tempo-dominios');
 router.use('/tempodominio/',  tempodominio);

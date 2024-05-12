@@ -5,7 +5,7 @@ router.use(express.json());
 const dbController = require('../../database/db');
 const funcs = require('../../utils/funcs');
 
-const sqlInsert = 'INSERT INTO `tempodominio` (`tempo`, `dominio`, `idusopesquisados`, `idprojeto`) VALUES ';
+const sqlInsert = 'REPLACE INTO `tempodominio` (`tempo`, `dominio`, `idusopesquisados`, `idprojeto`) VALUES ';
 const sqlGetProjeto = 'SELECT * FROM `projeto` WHERE `projeto`.`identificador` = ?;';
 
 // http://localhost:12005/api/registros/tempo/
