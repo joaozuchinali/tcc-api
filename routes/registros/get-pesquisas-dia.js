@@ -1,5 +1,8 @@
 
 
+
+
+
 const express = require('express');
 const router = express.Router();
 router.use(express.json());
@@ -7,32 +10,24 @@ router.use(express.json());
 const dbController = require('../../database/db');
 const funcs = require('../../utils/funcs');
 
-const sqlGet = 'select  ' +
-               '	regnav.dominio, ' +
-               '    count(regnav.dominio) as pesquisas, ' +
-               '    ( ' +
-               '		select sum(temp.tempo) from tempodominio as temp where temp.idprojeto = ? and temp.dominio = regnav.dominio ' +
-               '    ) as tempo, ' +
-               '    count(distinct(regnav.idusopesquisados)) as usuarios, ' +
-               '    ( ' +
-               '        select regnav2.favicon from registronavegacao as regnav2 ' +
-               "        where regnav2.idprojeto = ? AND regnav2.dominio = regnav.dominio AND regnav2.favicon <> '' " +
-               '        limit 1 ' +
-               '    ) as favicon ' +
-               'from  ' +
-               '	registronavegacao as regnav ' +
-               'where  ' +
-               '	regnav.idprojeto = ?  ' +
-               'group by regnav.dominio ';
+const sqlGet =  'select ' + 
+                "    FROM_UNIXTIME(regnav.acesso/1000,'%Y-%m-%d') as diap, "  +
+                '    count(regnav.idregistronavegacao) as pesquisas ' +
+                'from ' +
+                '	registronavegacao as regnav ' +
+                'where ' +
+                '    regnav.idprojeto = ? ' +
+                'group by ' +
+                '	diap ';
 
-// http://localhost:12005/api/registros/infosdominio/
-// https://joaozucchinalighislandi.com.br/api/registros/infosdominio/
+// http://localhost:12005/api/registros/pesquisasdia/
+// https://joaozucchinalighislandi.com.br/api/registros/pesquisasdia/
 router.post('/', async function(req, res) {
     const body = req.body;
     
     if(body.idprojeto) {
         const values = [
-            body.idprojeto, body.idprojeto, body.idprojeto
+            body.idprojeto
         ];
 
         dbController.getConnection()

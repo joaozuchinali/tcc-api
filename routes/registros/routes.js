@@ -26,4 +26,12 @@ router.use('/infosdominioext/',  infosdominioext);
 const tempodominio  = require('./get-tempo-dominios');
 router.use('/tempodominio/',  tempodominio);
 
+// retorna as informações de tempo por dia
+const tempodia  = require('./get-tempo-dia');
+router.use('/tempodia/',  tempodia);
+
+// retorna as informações de pesquisa por dia
+const pesquisasdia = require('./get-pesquisas-dia');
+router.use('/pesquisasdia/', pesquisasdia);
+
 module.exports = router;
